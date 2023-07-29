@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "../../app/hook";
-import {fetchCategories} from "../../store/Transactions/TransactionsThunk";
-import category from "../../components/Category/Category";
+import React, { useEffect } from 'react';
+import { Link, Outlet } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hook";
+import { deleteOne } from "../../store/CategoriesSlice/CategoriesThunk";
+import { fetchCategories } from "../../store/Transactions/TransactionsThunk";
 import Category from "../../components/Category/Category";
-import {Link, Outlet} from "react-router-dom";
-import {deleteOne} from "../../store/CategoriesSlice/CategoriesThunk";
 import Preloader from "../../components/UI/Preloader/Preloader";
 
 const Categories = () => {

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
+import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
-import {deleteOne, fetchCategories, fetchTransactions} from "../../store/Transactions/TransactionsThunk";
-import Transaction from "../../components/Transaction/Transaction";
 import { INITIAL_CATEGORY } from "../../constants";
-import {Outlet} from "react-router-dom";
+import { deleteOne, fetchCategories, fetchTransactions } from "../../store/Transactions/TransactionsThunk";
+import Transaction from "../../components/Transaction/Transaction";
 import Preloader from "../../components/UI/Preloader/Preloader";
 
 const Transactions = () => {

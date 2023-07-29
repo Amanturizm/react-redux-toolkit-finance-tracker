@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
-import {useAppSelector} from "../../app/hook";
+import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hook";
 import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
 
 interface Props {

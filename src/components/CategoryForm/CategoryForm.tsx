@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
-import { fetchCategories } from "../../store/Transactions/TransactionsThunk";
+import { clearCurrentCategory } from "../../store/CategoriesSlice/CategoriesSlice";
 import { createOne, editOne, fetchOne } from "../../store/CategoriesSlice/CategoriesThunk";
+import { fetchCategories } from "../../store/Transactions/TransactionsThunk";
 import Modal from "../UI/Modal/Modal";
 import Preloader from "../UI/Preloader/Preloader";
 import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
-import {clearCurrentCategory} from "../../store/CategoriesSlice/CategoriesSlice";
 
 const initialState: ICategoryForm = {
   type: '',
@@ -18,9 +18,8 @@ const CategoryForm = () => {
   const { id } = useParams() as { id: string };
 
   const dispatch = useAppDispatch();
-  const { categories } = useAppSelector(state => state.transactions);
   const { currentCategory, currentCategoryLoading } = useAppSelector(state => state.categories);
-  const { submitLoading, deleteLoading } = useAppSelector(state => state.categories);
+  const { submitLoading } = useAppSelector(state => state.categories);
 
   const [formValues, setFormValues] = useState<ICategoryForm>(initialState);
 

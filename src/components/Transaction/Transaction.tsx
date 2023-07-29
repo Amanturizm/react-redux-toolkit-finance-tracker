@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import dayjs from "dayjs";
-import {Link} from "react-router-dom";
-import {useAppSelector} from "../../app/hook";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hook";
 import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
 
 interface Props {

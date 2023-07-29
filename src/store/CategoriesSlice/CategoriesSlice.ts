@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createOne, deleteOne, editOne, fetchOne} from "./CategoriesThunk";
+import { createOne, deleteOne, editOne, fetchOne } from "./CategoriesThunk";
 
 interface State {
   currentCategory: ICategory | null;

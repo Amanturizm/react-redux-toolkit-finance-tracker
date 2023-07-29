@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createOne, deleteOne, editOne, fetchCategories, fetchOne, fetchTransactions} from "./TransactionsThunk";
+import { createOne, deleteOne, editOne, fetchCategories, fetchOne, fetchTransactions } from "./TransactionsThunk";
 
 interface State {
   transactions: ITransaction[];

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/UI/Layout/Layout";
-import NotFound from "./components/UI/NotFound/NotFound";
 import Transactions from "./containers/Transactions/Transactions";
 import TransactionsForm from "./components/TransactionsForm/TransactionsForm";
 import Categories from "./containers/Categories/Categories";
 import CategoryForm from "./components/CategoryForm/CategoryForm";
+import NotFound from "./components/UI/NotFound/NotFound";
 
 const App = () => (
   <Layout>

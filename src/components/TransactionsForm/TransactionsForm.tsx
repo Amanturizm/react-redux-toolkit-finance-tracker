@@ -1,16 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import Modal from "../UI/Modal/Modal";
-import {useAppDispatch, useAppSelector} from "../../app/hook";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hook";
+import { clearCurrentTransaction } from "../../store/Transactions/TransactionsSlice";
+import { createOne, editOne, fetchOne, fetchTransactions } from "../../store/Transactions/TransactionsThunk";
 import TransactionFormSelect from "../TransactionFormSelect/TransactionFormSelect";
-import {
-  createOne,
-  editOne,
-  fetchCategories,
-  fetchOne,
-  fetchTransactions
-} from "../../store/Transactions/TransactionsThunk";
-import {useNavigate, useParams} from "react-router-dom";
-import {clearCurrentTransaction} from "../../store/Transactions/TransactionsSlice";
+import Modal from "../UI/Modal/Modal";
 import Preloader from "../UI/Preloader/Preloader";
 import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
 

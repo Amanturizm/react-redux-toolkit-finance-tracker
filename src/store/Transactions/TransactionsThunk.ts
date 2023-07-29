@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import axiosApi from "../../axiosApi";
-import {RootState} from "../../app/store";
 
 export const fetchTransactions = createAsyncThunk<ITransaction[]>(
   'transactions/fetch-all',

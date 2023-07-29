@@ -1,5 +1,5 @@
 import React from 'react';
-import {CATEGORIES_TYPES} from "../../constants";
+import { CATEGORIES_TYPES } from "../../constants";
 
 interface Props {
   id?: string;
