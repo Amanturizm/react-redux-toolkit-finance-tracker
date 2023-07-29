@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { fetchCategories, fetchTransactions } from "../../store/Transactions/TransactionsThunk";
 import Transaction from "../../components/Transaction/Transaction";
 import { INITIAL_CATEGORY } from "../../constants";
+import {Outlet} from "react-router-dom";
 
 const Transactions = () => {
   const dispatch = useAppDispatch();
@@ -17,12 +18,12 @@ const Transactions = () => {
   }, [dispatch]);
 
   const formattedCategories = transactions.map(transaction => {
-    return categories.find(category => category.id === transaction.id) || INITIAL_CATEGORY;
+    return categories.find(category => category.id === transaction.category) || INITIAL_CATEGORY;
   });
 
   const total: number = transactions.length && categories.length ?
     transactions.reduce((acc, transaction, currentIndex) => {
-      return acc += categories[currentIndex].type === 'expense' ? -transaction.amount : transaction.amount;
+      return acc += formattedCategories[currentIndex].type === 'expense' ? -transaction.amount : transaction.amount;
   }, 0) : 0;
 
   return (
@@ -55,6 +56,8 @@ const Transactions = () => {
           </>
           : null
       }
+
+      <Outlet />
     </div>
   );
 };

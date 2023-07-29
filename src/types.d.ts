@@ -9,6 +9,12 @@ interface ITransactionApi {
   [id: string]: Omit<ITransaction, 'id'>;
 }
 
+interface ITransactionForm {
+  type: string;
+  category: string;
+  amount: string;
+}
+
 interface ICategory {
   id: string;
   type: string;

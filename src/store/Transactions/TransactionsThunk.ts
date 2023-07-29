@@ -22,3 +22,18 @@ export const fetchCategories = createAsyncThunk<ICategory[]>(
     return Object.keys(categories).map(id => ({ ...categories[id], id }));
   }
 );
+
+export const createOne = createAsyncThunk<void, ITransactionForm>(
+  'transactions/createOne',
+  async (newTransaction) => {
+    const datetime = new Date().toISOString();
+
+    const formattedNewTransaction: Omit<ITransaction, 'id'> = {
+      category: newTransaction.category,
+      amount: parseInt(newTransaction.amount),
+      datetime
+    };
+
+    await axiosApi.post('/transactions.json', formattedNewTransaction);
+  }
+);
