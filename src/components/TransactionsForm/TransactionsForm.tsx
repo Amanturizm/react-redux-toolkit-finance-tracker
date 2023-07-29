@@ -1,8 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from "../UI/Modal/Modal";
 import {useAppDispatch, useAppSelector} from "../../app/hook";
 import TransactionFormSelect from "../TransactionFormSelect/TransactionFormSelect";
-import {createOne} from "../../store/Transactions/TransactionsThunk";
+import {
+  createOne,
+  editOne,
+  fetchCategories,
+  fetchOne,
+  fetchTransactions
+} from "../../store/Transactions/TransactionsThunk";
+import {useNavigate, useParams} from "react-router-dom";
 
 const initialState: ITransactionForm = {
   type: '',
@@ -11,11 +18,30 @@ const initialState: ITransactionForm = {
 };
 
 const TransactionsForm = () => {
+  const navigate = useNavigate();
+  const { id } = useParams() as { id: string };
+
   const dispatch = useAppDispatch();
 
-  const { categories } = useAppSelector(state => state.transactions);
+  const { transactions, categories, currentTransaction } = useAppSelector(state => state.transactions);
 
   const [formValues, setFormValues] = useState<ITransactionForm>(initialState);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOne(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    const categoryIndex = transactions
+      .map(transaction => transaction.category)
+      .findIndex((id, index) => id === categories.map(category => category.id)[index]);
+
+    if (currentTransaction && categoryIndex > -1) {
+      setFormValues({ ...currentTransaction, type: categories[categoryIndex].type });
+    }
+  }, [currentTransaction, categories, transactions]);
 
   const changeValue = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,7 +52,14 @@ const TransactionsForm = () => {
   const sendData = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await dispatch(createOne(formValues));
+    if (id) {
+      await dispatch(editOne({ newTransaction: formValues, id }));
+    } else {
+      await dispatch(createOne(formValues));
+    }
+
+    await dispatch(fetchTransactions());
+    navigate('/');
   };
 
   const isValid: boolean =
@@ -91,10 +124,10 @@ const TransactionsForm = () => {
         </div>
 
         <button
-          className="disabled-button btn btn-primary"
+          className={`disabled-button btn btn-${id ? 'success' : 'primary'}`}
           disabled={isValid}
         >
-          Create
+          {id ? 'Edit': 'Create'}
         </button>
       </form>
     </Modal>

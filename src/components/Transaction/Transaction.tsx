@@ -1,13 +1,15 @@
 import React from 'react'
 import dayjs from "dayjs";
+import {Link} from "react-router-dom";
 
 interface Props {
+  id: string;
   category: ICategory;
   datetime: string;
   amount: number;
 }
 
-const Transaction: React.FC<Props> = ({ category, datetime, amount }) => {
+const Transaction: React.FC<Props> = ({ category, datetime, amount, id }) => {
   return (
     <div className="border border-2 border-black p-4 d-flex justify-content-between align-items-center gap-5">
       <div className="d-flex justify-content-between w-100">
@@ -24,7 +26,7 @@ const Transaction: React.FC<Props> = ({ category, datetime, amount }) => {
       </div>
 
       <div className="d-flex gap-3">
-        <button className="btn btn-success">edit</button>
+        <Link to={`/edit/${id}`} className="btn btn-success">edit</Link>
         <button className="btn btn-danger">delete</button>
       </div>
     </div>

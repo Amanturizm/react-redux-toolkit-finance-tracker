@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi";
+import {RootState} from "../../app/store";
 
 export const fetchTransactions = createAsyncThunk<ITransaction[]>(
   'transactions/fetch-all',
@@ -23,6 +24,17 @@ export const fetchCategories = createAsyncThunk<ICategory[]>(
   }
 );
 
+export const fetchOne = createAsyncThunk<Omit<ITransactionForm, 'type'> | null, string>(
+  'transactions/fetchOne',
+  async (id) => {
+    const { data } = await axiosApi.get<Omit<ITransaction, 'id'> | null>(`/transactions/${id}.json`);
+
+    if (!data) return null;
+
+    return { category: data.category, amount: data.amount + '' };
+  }
+);
+
 export const createOne = createAsyncThunk<void, ITransactionForm>(
   'transactions/createOne',
   async (newTransaction) => {
@@ -35,5 +47,29 @@ export const createOne = createAsyncThunk<void, ITransactionForm>(
     };
 
     await axiosApi.post('/transactions.json', formattedNewTransaction);
+  }
+);
+
+interface IEdit {
+  id: string;
+  newTransaction: ITransactionForm;
+}
+
+export const editOne = createAsyncThunk<void, IEdit, { state: RootState }>(
+  'transactions/editOne',
+  async ({ id, newTransaction }, { getState }) => {
+    const transactions = getState().transactions.transactions;
+
+    if (!transactions.length) return;
+
+    const datetime: string = transactions.find(transaction => transaction.id === id)?.datetime || '';
+
+    const formattedNewTransaction: Omit<ITransaction, 'id'> = {
+      category: newTransaction.category,
+      amount: parseInt(newTransaction.amount),
+      datetime
+    };
+
+    await axiosApi.put(`/transactions/${id}.json`, formattedNewTransaction);
   }
 );

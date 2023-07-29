@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {fetchCategories, fetchTransactions} from "./TransactionsThunk";
+import {fetchCategories, fetchOne, fetchTransactions} from "./TransactionsThunk";
 
 interface State {
   transactions: ITransaction[];
+  currentTransaction: Omit<ITransactionForm, 'type'> | null;
   categories: ICategory[];
 }
 
 const initialState: State = {
   transactions: [],
+  currentTransaction: null,
   categories: []
 };
 
@@ -22,6 +24,10 @@ const transactionsSlice = createSlice({
 
     builder.addCase(fetchCategories.fulfilled, (state, { payload }) => {
       state.categories = payload;
+    });
+
+    builder.addCase(fetchOne.fulfilled, (state, { payload }) => {
+      state.currentTransaction = payload;
     });
   }
 });

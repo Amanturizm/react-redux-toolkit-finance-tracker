@@ -44,6 +44,7 @@ const Transactions = () => {
                 transactions.map((transaction, index) => {
                   return (
                     <Transaction
+                      id={transaction.id}
                       datetime={transaction.datetime}
                       category={formattedCategories[index]}
                       amount={transaction.amount}

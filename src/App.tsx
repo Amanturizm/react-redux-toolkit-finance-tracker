@@ -10,6 +10,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<Transactions />}>
         <Route path="add-transaction" element={<TransactionsForm />} />
+        <Route path="edit/:id" element={<TransactionsForm />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
