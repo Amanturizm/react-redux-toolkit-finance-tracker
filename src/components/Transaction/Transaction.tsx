@@ -7,14 +7,15 @@ interface Props {
   category: ICategory;
   datetime: string;
   amount: number;
+  deleteClick: React.MouseEventHandler;
 }
 
-const Transaction: React.FC<Props> = ({ category, datetime, amount, id }) => {
+const Transaction: React.FC<Props> = ({ category, datetime, amount, deleteClick, id }) => {
   return (
     <div className="border border-2 border-black p-4 d-flex justify-content-between align-items-center gap-5">
       <div className="d-flex justify-content-between w-100">
-        <div className="d-flex gap-5">
-          <h2>{dayjs(datetime).format('DD.MM.YYYY HH:mm:ss')}</h2>
+        <div className="d-flex align-items-center gap-5">
+          <h3>{dayjs(datetime).format('DD/MM/YYYY HH:mm:ss')}</h3>
           <h2>{category.name}</h2>
         </div>
 
@@ -27,7 +28,7 @@ const Transaction: React.FC<Props> = ({ category, datetime, amount, id }) => {
 
       <div className="d-flex gap-3">
         <Link to={`/edit/${id}`} className="btn btn-success">edit</Link>
-        <button className="btn btn-danger">delete</button>
+        <button onClick={deleteClick} className="btn btn-danger">delete</button>
       </div>
     </div>
   );

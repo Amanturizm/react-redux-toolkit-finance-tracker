@@ -73,3 +73,10 @@ export const editOne = createAsyncThunk<void, IEdit, { state: RootState }>(
     await axiosApi.put(`/transactions/${id}.json`, formattedNewTransaction);
   }
 );
+
+export const deleteOne = createAsyncThunk<void, string>(
+  'transactions/deleteOne',
+  async (id) => {
+    await axiosApi.delete(`/transactions/${id}.json`);
+  }
+);

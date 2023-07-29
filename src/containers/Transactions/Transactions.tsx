@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../app/hook";
-import { fetchCategories, fetchTransactions } from "../../store/Transactions/TransactionsThunk";
+import {deleteOne, fetchCategories, fetchTransactions} from "../../store/Transactions/TransactionsThunk";
 import Transaction from "../../components/Transaction/Transaction";
 import { INITIAL_CATEGORY } from "../../constants";
 import {Outlet} from "react-router-dom";
@@ -26,6 +26,15 @@ const Transactions = () => {
       return acc += formattedCategories[currentIndex].type === 'expense' ? -transaction.amount : transaction.amount;
   }, 0) : 0;
 
+  const setDeleteConfirm = async (id: string) => {
+    const entry: boolean = window.confirm('Delete?');
+
+    if (entry) {
+      await dispatch(deleteOne(id));
+      await dispatch(fetchTransactions());
+    }
+  };
+
   return (
     <div>
       {
@@ -48,6 +57,7 @@ const Transactions = () => {
                       datetime={transaction.datetime}
                       category={formattedCategories[index]}
                       amount={transaction.amount}
+                      deleteClick={() => setDeleteConfirm(transaction.id)}
                       key={transaction.id}
                     />
                   )
