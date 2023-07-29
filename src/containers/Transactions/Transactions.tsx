@@ -4,11 +4,13 @@ import {deleteOne, fetchCategories, fetchTransactions} from "../../store/Transac
 import Transaction from "../../components/Transaction/Transaction";
 import { INITIAL_CATEGORY } from "../../constants";
 import {Outlet} from "react-router-dom";
+import Preloader from "../../components/UI/Preloader/Preloader";
 
 const Transactions = () => {
   const dispatch = useAppDispatch();
 
   const { transactions, categories } = useAppSelector(state => state.transactions);
+  const { transactionsLoading } = useAppSelector(state => state.transactions);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +25,8 @@ const Transactions = () => {
 
   const total: number = transactions.length && categories.length ?
     transactions.reduce((acc, transaction, currentIndex) => {
-      return acc += formattedCategories[currentIndex].type === 'expense' ? -transaction.amount : transaction.amount;
+      return acc +=
+        formattedCategories[currentIndex].type === 'expense' ? -transaction.amount : transaction.amount;
   }, 0) : 0;
 
   const setDeleteConfirm = async (id: string) => {
@@ -71,6 +74,7 @@ const Transactions = () => {
           : null
       }
 
+      {transactionsLoading && <Preloader />}
       <Outlet />
     </div>
   );

@@ -3,3 +3,5 @@ export const INITIAL_CATEGORY: ICategory = {
   type: '',
   name: '',
 };
+
+export const CATEGORIES_TYPES: string[] = ['expense', 'income'];

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from "react-router-dom";
+import {useAppSelector} from "../../app/hook";
+import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
 
 interface Props {
   category: ICategory;
@@ -7,6 +9,9 @@ interface Props {
 }
 
 const Category: React.FC<Props> = ({ category, deleteClick }) => {
+  const { deleteLoading } = useAppSelector(state => state.categories);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <div className="
     d-flex align-items-center justify-content-between gap-5
@@ -24,7 +29,18 @@ const Category: React.FC<Props> = ({ category, deleteClick }) => {
       </div>
       <div className="d-flex align-items-center gap-3">
         <Link to={`edit/${category.id}`} className="btn btn-success">edit</Link>
-        <button onClick={deleteClick} className="btn btn-danger">delete</button>
+        <button
+          className={`disabled-button
+          btn btn-danger
+          d-flex justify-content-center align-items-center gap-3`}
+          disabled={deleteLoading && isLoading}
+          onClick={(e) => (() => {
+            deleteClick(e);
+            setIsLoading(true);
+          })()}
+        >
+          delete{deleteLoading && isLoading && <ButtonSpinner />}
+        </button>
       </div>
     </div>
   );

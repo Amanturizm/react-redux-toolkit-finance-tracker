@@ -10,6 +10,9 @@ import {
   fetchTransactions
 } from "../../store/Transactions/TransactionsThunk";
 import {useNavigate, useParams} from "react-router-dom";
+import {clearCurrentTransaction} from "../../store/Transactions/TransactionsSlice";
+import Preloader from "../UI/Preloader/Preloader";
+import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
 
 const initialState: ITransactionForm = {
   type: '',
@@ -24,12 +27,17 @@ const TransactionsForm = () => {
   const dispatch = useAppDispatch();
 
   const { transactions, categories, currentTransaction } = useAppSelector(state => state.transactions);
+  const { currentTransactionLoading, submitLoading } = useAppSelector(state => state.transactions);
 
   const [formValues, setFormValues] = useState<ITransactionForm>(initialState);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchOne(id));
+    }
+
+    return () => {
+      dispatch(clearCurrentTransaction());
     }
   }, [dispatch, id]);
 
@@ -58,8 +66,8 @@ const TransactionsForm = () => {
       await dispatch(createOne(formValues));
     }
 
-    await dispatch(fetchTransactions());
     navigate('/');
+    await dispatch(fetchTransactions());
   };
 
   const isValid: boolean =
@@ -124,12 +132,15 @@ const TransactionsForm = () => {
         </div>
 
         <button
-          className={`disabled-button btn btn-${id ? 'success' : 'primary'}`}
-          disabled={isValid}
+          className={`disabled-button
+          btn btn-${id ? 'success' : 'primary'}
+          d-flex justify-content-center align-items-center gap-3`}
+          disabled={submitLoading || isValid}
         >
-          {id ? 'Edit': 'Create'}
+          {id ? 'Edit': 'Create'}{submitLoading && <ButtonSpinner />}
         </button>
       </form>
+      {currentTransactionLoading && <Preloader />}
     </Modal>
   );
 };

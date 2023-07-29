@@ -1,4 +1,5 @@
 import React from 'react';
+import {CATEGORIES_TYPES} from "../../constants";
 
 interface Props {
   id?: string;
@@ -19,19 +20,32 @@ const TransactionFormSelect: React.FC<Props> = ({ categories, name, formValues, 
     >
       <option value="" disabled hidden>Select {name}</option>
       {
-        categories.map(category => {
-          if ((name === 'category' && formValues.type.length) && formValues.type !== category.type) return null;
+        name === 'type' && categories.length ?
+          CATEGORIES_TYPES.map((type, index) => {
+            return (
+              <option
+                key={'category-' + categories[index].id}
+                className="text-black"
+                value={type}
+              >
+                {type[0].toUpperCase() + type.slice(1)}
+              </option>
+            );
+          })
+        :
+          categories.map(category => {
+            if (formValues.type.length && formValues.type !== category.type) return null;
 
-          return (
-            <option
-              key={'category-' + category.id}
-              className="text-black"
-              value={name === 'category' ? category.id : category.type}
-            >
-              {name === 'type' ? category.type : category.name}
-            </option>
-          );
-        })
+            return (
+              <option
+                key={'category-' + category.id}
+                className="text-black"
+                value={category.id}
+              >
+                {category.name}
+              </option>
+            );
+          })
       }
     </select>
   );

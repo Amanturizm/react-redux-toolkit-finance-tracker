@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hook";
+import { fetchCategories } from "../../store/Transactions/TransactionsThunk";
+import { createOne, editOne, fetchOne } from "../../store/CategoriesSlice/CategoriesThunk";
 import Modal from "../UI/Modal/Modal";
-import CloseButton from "../UI/CloseButton/CloseButton";
-import {useAppDispatch, useAppSelector} from "../../app/hook";
-import {useNavigate, useParams} from "react-router-dom";
-import {fetchCategories} from "../../store/Transactions/TransactionsThunk";
-import {createOne, editOne, fetchOne} from "../../store/CategoriesSlice/CategoriesThunk";
+import Preloader from "../UI/Preloader/Preloader";
+import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
+import {clearCurrentCategory} from "../../store/CategoriesSlice/CategoriesSlice";
 
 const initialState: ICategoryForm = {
   type: '',
@@ -17,7 +19,8 @@ const CategoryForm = () => {
 
   const dispatch = useAppDispatch();
   const { categories } = useAppSelector(state => state.transactions);
-  const { currentCategory } = useAppSelector(state => state.categories);
+  const { currentCategory, currentCategoryLoading } = useAppSelector(state => state.categories);
+  const { submitLoading, deleteLoading } = useAppSelector(state => state.categories);
 
   const [formValues, setFormValues] = useState<ICategoryForm>(initialState);
 
@@ -25,11 +28,19 @@ const CategoryForm = () => {
     if (id) {
       dispatch(fetchOne(id));
     }
+
+    return () => {
+      dispatch(clearCurrentCategory());
+    }
   }, [id, dispatch]);
 
   useEffect(() => {
     if (currentCategory) {
       setFormValues(currentCategory);
+    }
+
+    return () => {
+      setFormValues(initialState);
     }
   }, [currentCategory]);
 
@@ -48,8 +59,8 @@ const CategoryForm = () => {
       await dispatch(createOne(formValues));
     }
 
-    await dispatch(fetchCategories());
     navigate('/categories');
+    await dispatch(fetchCategories());
   };
 
   const isValid: boolean =
@@ -76,17 +87,8 @@ const CategoryForm = () => {
             onChange={changeValue}
           >
             <option value="" disabled hidden>Select type</option>
-            {
-              categories.map(category => (
-                <option
-                  key={'category-' + category.id}
-                  className="text-black"
-                  value={category.type}
-                >
-                  {category.type}
-                </option>
-              ))
-            }
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
           </select>
         </div>
 
@@ -109,12 +111,16 @@ const CategoryForm = () => {
         </div>
 
         <button
-          className={`disabled-button btn btn-${id ? 'success' : 'primary' }`}
-          disabled={isValid}
+          className={`disabled-button
+          btn btn-${id ? 'success' : 'primary'}
+          d-flex justify-content-center align-items-center gap-3`}
+          disabled={submitLoading || isValid}
         >
-          {id ? 'Edit': 'Create'}
+          {id ? 'Edit': 'Create'}{submitLoading && <ButtonSpinner />}
         </button>
       </form>
+
+      {currentCategoryLoading && <Preloader />}
     </Modal>
   );
 };

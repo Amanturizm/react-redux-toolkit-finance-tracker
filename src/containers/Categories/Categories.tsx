@@ -5,11 +5,12 @@ import category from "../../components/Category/Category";
 import Category from "../../components/Category/Category";
 import {Link, Outlet} from "react-router-dom";
 import {deleteOne} from "../../store/CategoriesSlice/CategoriesThunk";
+import Preloader from "../../components/UI/Preloader/Preloader";
 
 const Categories = () => {
   const dispatch = useAppDispatch();
 
-  const { categories } = useAppSelector(state => state.transactions);
+  const { categories, categoriesLoading } = useAppSelector(state => state.transactions);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -42,6 +43,7 @@ const Categories = () => {
         }
       </div>
 
+      {categoriesLoading && <Preloader />}
       <Outlet />
     </div>
   );

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
+import {useAppSelector} from "../../app/hook";
+import ButtonSpinner from "../UI/ButtonSpinner/ButtonSpinner";
 
 interface Props {
   id: string;
@@ -11,6 +13,9 @@ interface Props {
 }
 
 const Transaction: React.FC<Props> = ({ category, datetime, amount, deleteClick, id }) => {
+  const { deleteLoading } = useAppSelector(state => state.transactions);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <div className="border border-2 border-black p-4 d-flex justify-content-between align-items-center gap-5">
       <div className="d-flex justify-content-between w-100">
@@ -28,7 +33,18 @@ const Transaction: React.FC<Props> = ({ category, datetime, amount, deleteClick,
 
       <div className="d-flex gap-3">
         <Link to={`/edit/${id}`} className="btn btn-success">edit</Link>
-        <button onClick={deleteClick} className="btn btn-danger">delete</button>
+        <button
+          className={`disabled-button
+          btn btn-danger
+          d-flex justify-content-center align-items-center gap-3`}
+          disabled={deleteLoading && isLoading}
+          onClick={(e) => (() => {
+            deleteClick(e);
+            setIsLoading(true);
+          })()}
+        >
+          delete{deleteLoading && isLoading && <ButtonSpinner />}
+        </button>
       </div>
     </div>
   );
