@@ -41,8 +41,11 @@ const Transactions = () => {
         transactions.length && categories.length ?
           <>
             <div
-              className="border border-2 border-black d-flex justify-content-center align-items-center gap-2"
-              style={{ width: 220, height: 80 }}
+              className="
+              d-flex justify-content-center align-items-center gap-2
+              border border-2 border-black mx-auto mt-4
+              "
+              style={{ width: 350, height: 80 }}
             >
               <h3>Total: </h3><h3>{total} KGS</h3>
             </div>

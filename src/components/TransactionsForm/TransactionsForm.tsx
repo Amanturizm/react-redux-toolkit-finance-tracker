@@ -68,7 +68,7 @@ const TransactionsForm = () => {
     formValues.amount === '';
 
   return (
-    <Modal>
+    <Modal closeBtnTo="/">
       <h1 className="mb-4">Add Expense/Income</h1>
 
       <form onSubmit={sendData} className="d-flex flex-column">

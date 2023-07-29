@@ -1,7 +1,11 @@
 import React, { PropsWithChildren } from 'react';
 import CloseButton from "../CloseButton/CloseButton";
 
-const Modal: React.FC<PropsWithChildren> = ({ children }) => {
+interface Props extends PropsWithChildren {
+  closeBtnTo: string;
+}
+
+const Modal: React.FC<Props> = ({ closeBtnTo, children }) => {
   return (
     <div className="position-fixed top-0 start-0 end-0 bottom-0 bg-black bg-opacity-25">
       <div className=
@@ -13,7 +17,7 @@ const Modal: React.FC<PropsWithChildren> = ({ children }) => {
            style={{ width: 600 }}
       >
         {children}
-        <CloseButton to="/" />
+        <CloseButton to={closeBtnTo} />
       </div>
     </div>
   );

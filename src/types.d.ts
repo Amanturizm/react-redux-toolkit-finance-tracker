@@ -24,3 +24,8 @@ interface ICategory {
 interface ICategoryApi {
   [id: string]: Omit<ICategory, 'id'>;
 }
+
+interface ICategoryForm {
+  type: string;
+  name: string;
+}
